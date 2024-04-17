@@ -9,6 +9,7 @@ i2c = I2C(id=0, scl=Pin(1), sda=Pin(0), freq=100000)
 bmp180 = BMP180(i2c)
 # Define a configuração de oversampling para o sensor (maior valor significa maior precisão, mas mais tempo de leitura)
 bmp180.oversample_sett = 2
+# Define o valor de referência da pressão ao nível do mar em Pascal (101325 Pa)
 bmp180.baseline = 101325
 
 while True:
