@@ -108,7 +108,8 @@ class BMP180():
             except:
                 yield None
             yield True
-def blocking_read(self):
+
+    def blocking_read(self):
         if next(self.gauge) is not None: # Discard old data
             pass
         while next(self.gauge) is None:
@@ -125,7 +126,8 @@ def blocking_read(self):
         else:
             print('oversample_sett can only be 0, 1, 2 or 3, using 3 instead')
             self.oversample_setting = 3
-@property
+
+    @property
     def temperature(self):
         '''
         Temperature in degree C.
@@ -139,3 +141,47 @@ def blocking_read(self):
         X2 = self._MC*2**11/(X1+self._MD)
         self.B5_raw = X1+X2
         return (((X1+X2)+8)/2**4)/10
+
+    @property
+    def pressure(self):
+        '''
+        Pressure in mbar.
+        '''
+        next(self.gauge)
+        self.temperature  # Populate self.B5_raw
+        try:
+            MSB = unp('B', self.MSB_raw)[0]
+            LSB = unp('B', self.LSB_raw)[0]
+            XLSB = unp('B', self.XLSB_raw)[0]
+        except:
+            return 0.0
+        UP = ((MSB << 16)+(LSB << 8)+XLSB) >> (8-self.oversample_setting)
+        B6 = self.B5_raw-4000
+        X1 = (self._B2*(B6**2/2**12))/2**11
+        X2 = self._AC2*B6/2**11
+        X3 = X1+X2
+        B3 = ((int((self._AC1*4+X3)) << self.oversample_setting)+2)/4
+        X1 = self._AC3*B6/2**13
+        X2 = (self._B1*(B6**2/2**12))/2**16
+        X3 = ((X1+X2)+2)/2**2
+        B4 = abs(self._AC4)*(X3+32768)/2**15
+        B7 = (abs(UP)-B3) * (50000 >> self.oversample_setting)
+        if B7 < 0x80000000:
+            pressure = (B7*2)/B4
+        else:
+            pressure = (B7/B4)*2
+        X1 = (pressure/2**8)**2
+        X1 = (X1*3038)/2**16
+        X2 = (-7357*pressure)/2**16
+        return pressure+(X1+X2+3791)/2**4
+
+    @property
+    def altitude(self):
+        '''
+        Altitude in m.
+        '''
+        try:
+            p = -7990.0*math.log(self.pressure/self.baseline)
+        except:
+            p = 0.0
+        return p
