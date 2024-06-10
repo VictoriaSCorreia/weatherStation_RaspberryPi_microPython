@@ -35,6 +35,7 @@ class BMP180():
     '''
     Module for the BMP180 pressure sensor.
     '''
+
     _bmp_addr = 119             # adress of BMP180 is hardcoded on the sensor
 
     # init
@@ -79,7 +80,7 @@ class BMP180():
         '''
         return [self._AC1, self._AC2, self._AC3, self._AC4, self._AC5, self._AC6, 
                 self._B1, self._B2, self._MB, self._MC, self._MD, self.oversample_setting]
-        
+
     # gauge raw
     def makegauge(self):
         '''
