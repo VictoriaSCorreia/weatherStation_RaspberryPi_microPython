@@ -125,3 +125,17 @@ def blocking_read(self):
         else:
             print('oversample_sett can only be 0, 1, 2 or 3, using 3 instead')
             self.oversample_setting = 3
+@property
+    def temperature(self):
+        '''
+        Temperature in degree C.
+        '''
+        next(self.gauge)
+        try:
+            UT = unp('>H', self.UT_raw)[0]
+        except:
+            return 0.0
+        X1 = (UT-self._AC6)*self._AC5/2**15
+        X2 = self._MC*2**11/(X1+self._MD)
+        self.B5_raw = X1+X2
+        return (((X1+X2)+8)/2**4)/10
