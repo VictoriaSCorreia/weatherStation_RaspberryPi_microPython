@@ -108,3 +108,20 @@ class BMP180():
             except:
                 yield None
             yield True
+def blocking_read(self):
+        if next(self.gauge) is not None: # Discard old data
+            pass
+        while next(self.gauge) is None:
+            pass
+
+    @property
+    def oversample_sett(self):
+        return self.oversample_setting
+
+    @oversample_sett.setter
+    def oversample_sett(self, value):
+        if value in range(4):
+            self.oversample_setting = value
+        else:
+            print('oversample_sett can only be 0, 1, 2 or 3, using 3 instead')
+            self.oversample_setting = 3
