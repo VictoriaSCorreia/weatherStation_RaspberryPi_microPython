@@ -4,15 +4,16 @@ from time import sleep
 from bmp085 import BMP180
 import dht
 
+# led
 led = Pin("LED", Pin.OUT)
-
+# bmp
 i2c = SoftI2C(sda = 0, scl = 1, freq = 100000)
 bmp = BMP180(i2c)
 bmp.oversample = 2
 bmp.sealevel = 101325
 
-sensorDht = dht.DHT11(Pin(2))
 
+sensorDht = dht.DHT11(Pin(2))
 
 def measureData():
     sensorDht.measure()
@@ -20,7 +21,6 @@ def measureData():
     humidity = sensorDht.humidity() # %
     pressure = bmp.pressure  # hPa
     return temperature, humidity, pressure
-
 
 while True:
     led.high()
