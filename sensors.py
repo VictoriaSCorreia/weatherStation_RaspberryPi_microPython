@@ -11,8 +11,7 @@ i2c = SoftI2C(sda = 0, scl = 1, freq = 100000)
 bmp = BMP180(i2c)
 bmp.oversample = 2
 bmp.sealevel = 101325
-
-
+# dht
 sensorDht = dht.DHT11(Pin(2))
 
 def measureData():
