@@ -24,7 +24,6 @@ def measureData():
 while True:
     led.high()
     temperature, humidity, pressure = measureData()
-
     print(f"Temperature: {temperature}C°")
     print(f"Pressure: {pressure} hPa")
     print(f"Humidity: {humidity}%")
