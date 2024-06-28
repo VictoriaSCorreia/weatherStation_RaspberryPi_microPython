@@ -1,7 +1,7 @@
 from machine import Pin
 from machine import SoftI2C
 from time import sleep
-from bmp085 import BMP180
+from Bmp085 import BMP180
 import dht
 
 # led
