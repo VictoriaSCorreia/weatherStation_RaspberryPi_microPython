@@ -51,4 +51,24 @@ class I2cLcd(LcdApi):
         self.i2c.writeto(self.i2c_addr, bytes([1 << SHIFT_BACKLIGHT]))
         gc.collect()
         
+    def hal_backlight_off(self):
+        #Allows the hal layer to turn the backlight off
+        self.i2c.writeto(self.i2c_addr, bytes([0]))
+        gc.collect()
+        
+    def hal_write_command(self, cmd):
+        # Write a command to the LCD. Data is latched on the falling edge of E.
+        byte = ((self.backlight << SHIFT_BACKLIGHT) |
+                (((cmd >> 4) & 0x0f) << SHIFT_DATA))
+        self.i2c.writeto(self.i2c_addr, bytes([byte | MASK_E]))
+        self.i2c.writeto(self.i2c_addr, bytes([byte]))
+        byte = ((self.backlight << SHIFT_BACKLIGHT) |
+                ((cmd & 0x0f) << SHIFT_DATA))
+        self.i2c.writeto(self.i2c_addr, bytes([byte | MASK_E]))
+        self.i2c.writeto(self.i2c_addr, bytes([byte]))
+        if cmd <= 3:
+            # The home and clear commands require a worst case delay of 4.1 msec
+            utime.sleep_ms(5)
+        gc.collect()
+
    
