@@ -46,4 +46,9 @@ class I2cLcd(LcdApi):
         self.i2c.writeto(self.i2c_addr, bytes([byte]))
         gc.collect()
         
-    
+    def hal_backlight_on(self):
+        # Allows the hal layer to turn the backlight on
+        self.i2c.writeto(self.i2c_addr, bytes([1 << SHIFT_BACKLIGHT]))
+        gc.collect()
+        
+   
