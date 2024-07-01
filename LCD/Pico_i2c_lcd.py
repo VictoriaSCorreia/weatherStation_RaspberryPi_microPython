@@ -71,4 +71,16 @@ class I2cLcd(LcdApi):
             utime.sleep_ms(5)
         gc.collect()
 
-   
+    def hal_write_data(self, data):
+        # Write data to the LCD. Data is latched on the falling edge of E.
+        byte = (MASK_RS |
+                (self.backlight << SHIFT_BACKLIGHT) |
+                (((data >> 4) & 0x0f) << SHIFT_DATA))
+        self.i2c.writeto(self.i2c_addr, bytes([byte | MASK_E]))
+        self.i2c.writeto(self.i2c_addr, bytes([byte]))
+        byte = (MASK_RS |
+                (self.backlight << SHIFT_BACKLIGHT) |
+                ((data & 0x0f) << SHIFT_DATA))      
+        self.i2c.writeto(self.i2c_addr, bytes([byte | MASK_E]))
+        self.i2c.writeto(self.i2c_addr, bytes([byte]))
+        gc.collect()
