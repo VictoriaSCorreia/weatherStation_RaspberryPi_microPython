@@ -38,4 +38,12 @@ class I2cLcd(LcdApi):
         self.hal_write_command(cmd)
         gc.collect()
 
+    def hal_write_init_nibble(self, nibble):
+        # Writes an initialization nibble to the LCD.
+        # This particular function is only used during initialization.
+        byte = ((nibble >> 4) & 0x0f) << SHIFT_DATA
+        self.i2c.writeto(self.i2c_addr, bytes([byte | MASK_E]))
+        self.i2c.writeto(self.i2c_addr, bytes([byte]))
+        gc.collect()
+        
     
