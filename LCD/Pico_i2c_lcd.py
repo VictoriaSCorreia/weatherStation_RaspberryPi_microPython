@@ -1,7 +1,7 @@
 import utime
 import gc
 
-from lcd_api import LcdApi
+from Lcd_API import LcdApi
 from machine import I2C
 
 # PCF8574 pin definitions

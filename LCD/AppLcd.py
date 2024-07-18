@@ -2,8 +2,8 @@ from machine import Pin
 from machine import I2C
 import time
 
-from pico_i2c_lcd import I2cLcd
-from lcd_api import LcdApi
+from Pico_i2c_lcd import I2cLcd
+from Lcd_API import LcdApi
 
 import dht
 
