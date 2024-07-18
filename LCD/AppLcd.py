@@ -32,7 +32,11 @@ lcd.putstr("Starting...")
 lcd.move_to(0,1)
 lcd.putstr("Measure:")
 time.sleep(4)
+while True:
+    temperature, humidity = measureData()
 
-
-
-#AppLCD#
+    lcd.move_to(0,0)
+    lcd.putstr(f"Temperature: {temperature}C")
+    lcd.move_to(0,1)
+    lcd.putstr(f"Humidity: {humidity}%")
+    time.sleep(6)
