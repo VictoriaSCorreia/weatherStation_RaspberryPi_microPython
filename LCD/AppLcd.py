@@ -27,3 +27,12 @@ def measureData():
     
     return temperature, humidity
 
+
+lcd.putstr("Starting...")
+lcd.move_to(0,1)
+lcd.putstr("Measure:")
+time.sleep(4)
+
+
+
+#AppLCD#
