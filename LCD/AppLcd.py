@@ -17,7 +17,6 @@ colunas = 16
 lcd = I2cLcd(i2c,endereco,linhas,colunas)
 
 # DHT11 configuration
-
 sensorDht = dht.DHT11(Pin(2))
 
 def measureData():
@@ -26,7 +25,6 @@ def measureData():
     humidity = sensorDht.humidity()
     
     return temperature, humidity
-
 
 lcd.putstr("Starting...")
 lcd.move_to(0,1)
